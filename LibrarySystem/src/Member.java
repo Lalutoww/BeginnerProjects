@@ -2,16 +2,20 @@ import java.util.ArrayList;
 
 public class Member {
     private final String name;
-    private final int ID;
+    private final int id;
     private final ArrayList<Book> borrowedBooks = new ArrayList<>();
 
     public Member(String name, int ID) {
         this.name = name;
-        this.ID = ID;
+        this.id = ID;
     }
 
-    public int getID() {
-        return ID;
+    public String getName(){
+        return this.name;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public ArrayList<Book> getBorrowedBooks() {
@@ -31,9 +35,17 @@ public class Member {
         System.out.println("This member hasn't borrowed this book.");
     }
 
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+
+        if(!(obj instanceof Member compared)) return false;
+
+        return this.name == compared.name && this.id == compared.id;
+    }
+
     @Override
     public String toString() {
-        return "Member{id=" + ID +
+        return "Member{id=" + id +
                 ", name='" + name +
                 "', borrowed=" + borrowedBooks.size() + "}";
     }

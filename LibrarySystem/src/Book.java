@@ -38,6 +38,14 @@ public class Book {
         return this.quantity > 0;
     }
 
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+
+        if(!(obj instanceof Book compared)) return false;
+
+        return this.title == compared.title && this.author == compared.author && this.isbn == compared.isbn;
+    }
+
     @Override
     public String toString() {
         return title +

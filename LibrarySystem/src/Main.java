@@ -69,9 +69,23 @@ void main() {
     }
 
     // Searching
+    System.out.println("\n=== Searching ===");
     System.out.println("Search by title:");
     System.out.println(library.findBookByTitle("Effective Java"));
 
     System.out.println("\nSearch by ISBN:");
     System.out.println(library.findBookByISBN("9780132350884"));
+
+    //Equals
+    System.out.println("\n=== Equals ===");
+    Book book1 = new Book("Test 1", "Test", "123456", 4);
+    Book book2 = new Book("Test 1", "Test", "123456", 66);
+    Book book3 = new Book("Test 2", "Test", "123456", 4);
+    System.out.printf("Are %s and %s the same : %s%n", book1.getTitle(), book2.getTitle(), book1.equals(book2));
+    System.out.printf("Are %s and %s the same : %s%n", book1.getTitle(), book3.getTitle(), book1.equals(book3));
+
+    Member member1 = library.getMembers().getFirst();
+    Member member2 = library.getMembers().getLast();
+    System.out.printf("Are %s and %s the same : %s%n", member1.getName(), member2.getName(), member1.equals(member2));
+
 }

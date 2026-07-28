@@ -49,7 +49,7 @@ public class Library {
 
     private Member findMember(int id) {
         for (Member member : this.members) {
-            if (member.getID() == id) {
+            if (member.getId() == id) {
                 return member;
             }
         }
