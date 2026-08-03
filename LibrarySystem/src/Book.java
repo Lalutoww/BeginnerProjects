@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Book {
     private final String title;
     private final String author;
@@ -38,12 +40,18 @@ public class Book {
         return this.quantity > 0;
     }
 
+    @Override
     public boolean equals(Object obj){
         if(this == obj) return true;
 
         if(!(obj instanceof Book compared)) return false;
 
-        return this.title == compared.title && this.author == compared.author && this.isbn == compared.isbn;
+        return this.isbn.equals(compared.isbn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.isbn);
     }
 
     @Override

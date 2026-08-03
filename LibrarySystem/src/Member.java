@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Member {
     private final String name;
@@ -26,13 +27,14 @@ public class Member {
             borrowedBooks.add(book);
     }
 
-    public void returnBook(Book book){
+    public boolean returnBook(Book book){
         // if the book exists, therefore is removed, then return it, otherwise false
         if (borrowedBooks.remove(book)) {
             book.setQuantity(book.getQuantity()+1);
-            return;
+            return true;
         }
-        System.out.println("This member hasn't borrowed this book.");
+
+        return false;
     }
 
     public boolean equals(Object obj){
@@ -40,7 +42,12 @@ public class Member {
 
         if(!(obj instanceof Member compared)) return false;
 
-        return this.name == compared.name && this.id == compared.id;
+        return this.id == compared.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.id);
     }
 
     @Override

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Library {
     private static int currentId = 1;
@@ -14,17 +15,22 @@ public class Library {
         return members;
     }
 
-    public ArrayList<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void addBook(Book book) {
-        this.books.add(book);
+    public boolean addBook(Book book) {
+        if(findBookByISBN(book.getIsbn()) != null)
+            return false;
+
+        books.add(book);
+        return true;
     }
 
-    public void registerMember(String name) {
+    public Member registerMember(String name) {
         Member member = new Member(name, currentId++);
         members.add(member);
+        return member;
     }
 
     public Book findBookByTitle(String title) {
@@ -47,7 +53,7 @@ public class Library {
         return null;
     }
 
-    private Member findMember(int id) {
+    public Member findMember(int id) {
         for (Member member : this.members) {
             if (member.getId() == id) {
                 return member;
@@ -57,44 +63,30 @@ public class Library {
         return null;
     }
 
-    public void borrowBook(int memberId, String title) {
+    public boolean borrowBook(int memberId, String title) {
         Member member = findMember(memberId);
-        if (member == null) {
-            System.out.println("No such member exists!");
-            return;
-        }
+        if (member == null) return false;
 
         Book book = findBookByTitle(title);
-        if (book == null) {
-            System.out.println("We don't have that book, sorry!");
-            return;
-        }
+        if (book == null) return false;
 
         //Check if the book has enough quantity
-        if (!book.isAvailable()) {
-            System.out.println("All copies of " + book.getTitle() + " are already borrowed!");
-            return;
-        }
+        if (!book.isAvailable()) return false;
 
         member.borrowBook(book);
         book.setQuantity(book.getQuantity() - 1);
+        return true;
     }
 
-    public void returnBook(int memberId, String title) {
+    public boolean returnBook(int memberId, String title) {
         Member member = findMember(memberId);
-        if (member == null) {
-            System.out.println("No such member.");
-            return;
-        }
+        if (member == null) return false;
 
         Book book = findBookByTitle(title);
-        if (book == null) {
-            System.out.println("No such book.");
-            return;
-        }
+        if (book == null) return false;
 
         //Try returning the book
-        member.returnBook(book);
+        return member.returnBook(book);
     }
 
     @Override
