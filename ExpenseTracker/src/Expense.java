@@ -4,11 +4,11 @@ import java.util.Objects;
 public class Expense {
     private static int idCounter = 1;
 
-    private int id;
-    private double value;
-    private String category;
-    private LocalDate date;
-    private String description;
+    private final int id;
+    private final double value;
+    private final String category;
+    private final LocalDate date;
+    private final String description;
 
     public Expense(double value, String category, LocalDate date, String description) {
         this.id = idCounter++;
@@ -24,14 +24,6 @@ public class Expense {
 
     public String getCategory() {
         return category;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public int getId() {
