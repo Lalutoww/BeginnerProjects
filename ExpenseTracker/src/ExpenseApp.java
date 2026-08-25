@@ -109,22 +109,30 @@ public class ExpenseApp {
         if(ex == null){
             System.out.println("No such expense!");
         }else{
+            System.out.println("Enter new values when prompted (empty keeps current value)");
+
             System.out.print("Enter new sum: ");
-            double sum = Double.parseDouble(scanner.nextLine());
-            ex.setValue(sum);
+            String value = scanner.nextLine();
+            if(!value.isEmpty()){
+                double sum = Double.parseDouble(value);
+                ex.setValue(sum);
+            }
 
             System.out.print("Enter new category: ");
             String category = scanner.nextLine();
-            ex.setCategory(category);
+            if(!category.isEmpty()) ex.setCategory(category);
 
             System.out.print("Enter new date (dd.mm.yyyy): ");
-            String[] dateValue = scanner.nextLine().split("\\.");
-            LocalDate date = LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
-            ex.setDate(date);
+            String dateString = scanner.nextLine();
+            if(!dateString.isEmpty()) {
+                String[] dateValue = dateString.split("\\.");
+                LocalDate date = LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
+                ex.setDate(date);
+            }
 
             System.out.print("Enter new description: ");
             String description = scanner.nextLine();
-            ex.setDescription(description);
+            if(!description.isEmpty()) ex.setDescription(description);
 
         }
     }

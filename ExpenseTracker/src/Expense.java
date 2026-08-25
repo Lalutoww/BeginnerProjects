@@ -12,7 +12,7 @@ public class Expense {
 
     public Expense(double value, String category, LocalDate date, String description) {
         this.id = idCounter++;
-        this.value = Math.abs(value);
+        setValue(value);
         this.category = category;
         this.date = date;
         this.description = description;
@@ -38,7 +38,7 @@ public class Expense {
     }
 
     public void setValue(double value) {
-        this.value = value;
+        this.value = Math.abs(value);;
     }
 
     public void setCategory(String category) {
