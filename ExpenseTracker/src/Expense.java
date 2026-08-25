@@ -34,6 +34,10 @@ public class Expense {
         return date;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == null || getClass() != other.getClass()) return false;
