@@ -25,24 +25,44 @@ public class ExpenseTracker {
         return this.expenses.stream().filter(x -> x.getCategory().equalsIgnoreCase(category)).collect(Collectors.toList());
     }
 
-    public double getTotalSum(){
-        double sum = 0;
-        for(Expense ex : expenses){
-            sum+= ex.getValue();
+    public double getTotalSum(int month){
+        if(month < 0 || month > 12){
+            return 0.00;
         }
-        return sum;
+        if(month == 0){
+            return this.expenses.stream().mapToDouble(Expense::getValue).sum();
+        }
+        return this.expenses.stream().filter(x -> x.getDate().getMonthValue() == month).mapToDouble(Expense::getValue).sum();
     }
 
-    public double getAverageSum(){
-        return this.expenses.stream().mapToDouble(Expense::getValue).average().orElse(0.00);
+    public double getAverageSum(int month){
+        if(month < 0 || month > 12){
+            return 0.00;
+        }
+        if(month == 0){
+            return this.expenses.stream().mapToDouble(Expense::getValue).average().orElse(0.00);
+        }
+        return this.expenses.stream().filter(x -> x.getDate().getMonthValue() == month).mapToDouble(Expense::getValue).average().orElse(0.00);
     }
 
-    public double getMostExpensiveSum(){
-        return this.expenses.stream().sorted(new sortByAmount()).mapToDouble(Expense::getValue).max().orElse(0.00);
+    public double getMostExpensiveSum(int month){
+        if(month < 0 || month > 12){
+            return 0.00;
+        }
+        if(month == 0){
+            return this.expenses.stream().mapToDouble(Expense::getValue).max().orElse(0.00);
+        }
+        return this.expenses.stream().sorted(new sortByAmount()).filter(x -> x.getDate().getMonthValue() == month).mapToDouble(Expense::getValue).max().orElse(0.00);
     }
 
-    public double getLeastExpensiveSum(){
-        return this.expenses.stream().sorted(new sortByAmount()).mapToDouble(Expense::getValue).min().orElse(0.00);
+    public double getLeastExpensiveSum(int month){
+        if(month < 0 || month > 12){
+            return 0.00;
+        }
+        if(month == 0){
+            return this.expenses.stream().mapToDouble(Expense::getValue).min().orElse(0.00);
+        }
+        return this.expenses.stream().sorted(new sortByAmount()).filter(x -> x.getDate().getMonthValue() == month).mapToDouble(Expense::getValue).min().orElse(0.00);
     }
 
     public Expense searchByValue(double value){

@@ -70,11 +70,16 @@ public class ExpenseApp {
     }
 
     private void showStatistics() {
-        System.out.println("Total expenses: " + this.expenseTracker.getTotalSum());
-        System.out.println("Average expense: " + this.expenseTracker.getAverageSum());
-        System.out.println("Highest expense: " + this.expenseTracker.getMostExpensiveSum());
-        System.out.println("Lowest expense: " + this.expenseTracker.getMostExpensiveSum());
+        System.out.print("Enter month number or leave empty for total stats: ");
+        String input = scanner.nextLine();
+        int monthValue = input.isEmpty() ? 0 :Integer.parseInt(input);
+
+        System.out.println("Total expenses: " + this.expenseTracker.getTotalSum(monthValue));
+        System.out.println("Average expense: " + this.expenseTracker.getAverageSum(monthValue));
+        System.out.println("Highest expense: " + this.expenseTracker.getMostExpensiveSum(monthValue));
+        System.out.println("Lowest expense: " + this.expenseTracker.getLeastExpensiveSum(monthValue));
         System.out.println("Number of expenses: " + this.expenseTracker.getExpenses().size());
+
     }
 
     private void searchExpense() {
@@ -140,6 +145,7 @@ public class ExpenseApp {
 
         }
     }
+
 
 
 }
