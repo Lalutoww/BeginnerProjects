@@ -31,9 +31,9 @@ public class Expense {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Expense expense = (Expense) o;
+    public boolean equals(Object other) {
+        if (other == null || getClass() != other.getClass()) return false;
+        Expense expense = (Expense) other;
         return id == expense.id;
     }
 
