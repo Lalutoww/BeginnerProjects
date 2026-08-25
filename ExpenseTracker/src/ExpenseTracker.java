@@ -40,7 +40,7 @@ public class ExpenseTracker {
         return expensesForMonth(month).mapToDouble(Expense::getValue).average().orElse(0.00);
     }
 
-    public double getMostExpensiveSum(int month){
+    public double getHighestExpense(int month){
         if(isMonthInvalid(month)){
             return 0.00;
         }
@@ -48,11 +48,19 @@ public class ExpenseTracker {
         return expensesForMonth(month).mapToDouble(Expense::getValue).max().orElse(0.00);
     }
 
-    public double getLeastExpensiveSum(int month){
+    public double getLowestExpense(int month){
         if(isMonthInvalid(month)){
             return 0.00;
         }
         return expensesForMonth(month).mapToDouble(Expense::getValue).min().orElse(0.00);
+    }
+
+    public int getTotalExpenses(int month){
+        if(isMonthInvalid(month)){
+            return 0;
+        }
+
+        return (int) expensesForMonth(month).count();
     }
 
     public Expense searchByValue(double value){

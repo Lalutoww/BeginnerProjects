@@ -76,9 +76,9 @@ public class ExpenseApp {
 
         System.out.println("Total expenses: " + this.expenseTracker.getTotalSum(monthValue));
         System.out.println("Average expense: " + this.expenseTracker.getAverageSum(monthValue));
-        System.out.println("Highest expense: " + this.expenseTracker.getMostExpensiveSum(monthValue));
-        System.out.println("Lowest expense: " + this.expenseTracker.getLeastExpensiveSum(monthValue));
-        System.out.println("Number of expenses: " + this.expenseTracker.getExpenses().size());
+        System.out.println("Highest expense: " + this.expenseTracker.getHighestExpense(monthValue));
+        System.out.println("Lowest expense: " + this.expenseTracker.getLowestExpense(monthValue));
+        System.out.println("Number of expenses: " + this.expenseTracker.getTotalExpenses(monthValue));
 
     }
 
