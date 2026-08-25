@@ -66,13 +66,10 @@ public class ExpenseApp {
     }
 
     private void searchExpense() {
-
-        expenseTracker.selectionSortByValue();
-
         System.out.print("Enter value: ");
         double value = Double.parseDouble(scanner.nextLine());
 
-        Expense expense = expenseTracker.binarySearchByValue(value);
+        Expense expense = expenseTracker.searchByValue(value);
 
         if (expense == null) {
             System.out.println("Expense not found.");

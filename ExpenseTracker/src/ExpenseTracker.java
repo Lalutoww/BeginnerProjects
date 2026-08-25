@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ExpenseTracker {
-    private List<Expense> expenses;
+    private final List<Expense> expenses;
 
     public ExpenseTracker(){
         this.expenses = new ArrayList<>();
@@ -33,48 +33,7 @@ public class ExpenseTracker {
         return sum;
     }
 
-    public void selectionSortByValue(){
-        for (int i = 0; i < expenses.size() - 1; i++) {
-
-            int min = i;
-
-            for (int j = i + 1; j < expenses.size(); j++) {
-
-                if(expenses.get(j).getValue() < expenses.get(min).getValue()) {
-                    min = j;
-                }
-
-            }
-
-            if(min != i) {
-                Expense temp = expenses.get(i);
-                expenses.set(i, expenses.get(min));
-                expenses.set(min, temp);
-            }
-        }
-    }
-
-    public Expense binarySearchByValue(double value) {
-
-        int left = 0;
-        int right = expenses.size() - 1;
-
-        while (left <= right) {
-            int middle = left + (right - left) / 2;
-
-            Expense current = expenses.get(middle);
-
-            if (Math.abs(current.getValue() - value) < 0.0001) {
-                return current;
-            }
-
-            if (current.getValue() < value) {
-                left = middle + 1;
-            } else {
-                right = middle - 1;
-            }
-        }
-
-        return null;
+    public Expense searchByValue(double value){
+        return this.expenses.stream().filter(x -> x.getValue() == value).findFirst().orElse(null);
     }
 }
