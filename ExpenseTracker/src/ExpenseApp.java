@@ -20,11 +20,11 @@ public class ExpenseApp {
                 case "help" -> printMenu();
                 case "add" -> addExpense();
                 case "list" -> listExpenses();
-                case "total" -> showTotal();
                 case "search" -> searchExpense();
                 case "filter by category" -> filterByCategory();
                 case "remove" -> removeExpense();
                 case "edit" -> editExpense();
+                case "stats" -> showStatistics();
                 case "quit" -> {
                     return;
                 }
@@ -39,12 +39,12 @@ public class ExpenseApp {
                 0. Help -> shows the menu again!
                 1. Add -> Log a new expense!
                 2. List -> List all of your expenses!
-                3. Total -> Get a total sum of all your expenses!
-                4. Search -> Search for an element!
-                5. Filter By Category -> Filters by category!
-                6. Remove -> Removes an expense from your tracker!
-                8. Edit -> Edit an expense!
-                7. Quit -> Quits the app!
+                3. Search -> Search for an element!
+                4. Filter By Category -> Filters by category!
+                5. Remove -> Removes an expense from your tracker!
+                6. Edit -> Edit an expense!
+                7. Stats -> Show statistics!
+                X. Quit -> Quits the app!
                 """);
         System.out.println();
     }
@@ -69,8 +69,12 @@ public class ExpenseApp {
         this.expenseTracker.getExpenses().forEach(System.out::println);
     }
 
-    private void showTotal(){
-        System.out.printf("The total sum of your expenses is: %.2f%n",this.expenseTracker.getTotalSum());
+    private void showStatistics() {
+        System.out.println("Total expenses: " + this.expenseTracker.getTotalSum());
+        System.out.println("Average expense: " + this.expenseTracker.getAverageSum());
+        System.out.println("Highest expense: " + this.expenseTracker.getMostExpensiveSum());
+        System.out.println("Lowest expense: " + this.expenseTracker.getMostExpensiveSum());
+        System.out.println("Number of expenses: " + this.expenseTracker.getExpenses().size());
     }
 
     private void searchExpense() {
@@ -99,7 +103,7 @@ public class ExpenseApp {
         int id = Integer.parseInt(scanner.nextLine());
         if(!this.expenseTracker.remove(id)){
             System.out.println("No such expense!");
-        };
+        }
     }
 
     private void editExpense(){

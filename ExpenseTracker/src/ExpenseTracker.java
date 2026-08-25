@@ -33,6 +33,18 @@ public class ExpenseTracker {
         return sum;
     }
 
+    public double getAverageSum(){
+        return this.expenses.stream().mapToDouble(Expense::getValue).average().orElse(0.00);
+    }
+
+    public double getMostExpensiveSum(){
+        return this.expenses.stream().sorted(new sortByAmount()).mapToDouble(Expense::getValue).max().orElse(0.00);
+    }
+
+    public double getLeastExpensiveSum(){
+        return this.expenses.stream().sorted(new sortByAmount()).mapToDouble(Expense::getValue).min().orElse(0.00);
+    }
+
     public Expense searchByValue(double value){
         return this.expenses.stream().filter(x -> x.getValue() == value).findFirst().orElse(null);
     }
