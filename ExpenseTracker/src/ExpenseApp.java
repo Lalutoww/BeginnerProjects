@@ -11,12 +11,13 @@ public class ExpenseApp {
     }
 
     public void start(){
+        printMenu();
         while(true){
-            printMenu();
             System.out.print("Enter command: ");
             String command = scanner.nextLine();
 
             switch (command.toLowerCase()){
+                case "help" -> printMenu();
                 case "add" -> addExpense();
                 case "list" -> listExpenses();
                 case "total" -> showTotal();
