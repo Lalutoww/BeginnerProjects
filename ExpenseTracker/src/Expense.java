@@ -46,7 +46,7 @@ public class Expense {
     }
 
     public void setValue(double value) {
-        this.value = Math.abs(value);;
+        this.value = Math.abs(value);
     }
 
     public void setCategory(String category) {
