@@ -71,7 +71,7 @@ public class ExpenseTracker {
     }
 
     public Expense searchByValue(double value){
-        return this.expenses.stream().filter(x -> x.getValue() == value).findFirst().orElse(null);
+        return this.expenses.stream().filter(x -> Math.abs(x.getValue() - value) < 0.001).findFirst().orElse(null);
     }
 
     public Expense searchByID(int id){
