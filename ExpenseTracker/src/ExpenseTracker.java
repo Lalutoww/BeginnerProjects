@@ -36,4 +36,8 @@ public class ExpenseTracker {
     public Expense searchByValue(double value){
         return this.expenses.stream().filter(x -> x.getValue() == value).findFirst().orElse(null);
     }
+
+    public Expense searchByID(int id){
+        return this.expenses.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+    }
 }

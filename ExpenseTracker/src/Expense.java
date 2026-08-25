@@ -5,10 +5,10 @@ public class Expense {
     private static int idCounter = 1;
 
     private final int id;
-    private final double value;
-    private final String category;
-    private final LocalDate date;
-    private final String description;
+    private double value;
+    private String category;
+    private LocalDate date;
+    private String description;
 
     public Expense(double value, String category, LocalDate date, String description) {
         this.id = idCounter++;
@@ -35,6 +35,22 @@ public class Expense {
         if (other == null || getClass() != other.getClass()) return false;
         Expense expense = (Expense) other;
         return id == expense.id;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

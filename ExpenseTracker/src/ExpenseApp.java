@@ -23,6 +23,7 @@ public class ExpenseApp {
                 case "search" -> searchExpense();
                 case "filter by category" -> filterByCategory();
                 case "remove" -> removeExpense();
+                case "edit" -> editExpense();
                 case "quit" -> {
                     return;
                 }
@@ -34,12 +35,14 @@ public class ExpenseApp {
     private void printMenu(){
         System.out.println("""
                 Commands:
+                0. Help -> shows the menu again!
                 1. Add -> Log a new expense!
                 2. List -> List all of your expenses!
                 3. Total -> Get a total sum of all your expenses!
                 4. Search -> Search for an element!
                 5. Filter By Category -> Filters by category!
                 6. Remove -> Removes an expense from your tracker!
+                8. Edit -> Edit an expense!
                 7. Quit -> Quits the app!
                 """);
         System.out.println();
@@ -65,6 +68,10 @@ public class ExpenseApp {
         this.expenseTracker.getExpenses().forEach(System.out::println);
     }
 
+    private void showTotal(){
+        System.out.printf("The total sum of your expenses is: %.2f%n",this.expenseTracker.getTotalSum());
+    }
+
     private void searchExpense() {
         System.out.print("Enter value: ");
         double value = Double.parseDouble(scanner.nextLine());
@@ -77,10 +84,6 @@ public class ExpenseApp {
             System.out.println(expense);
         }
 
-    }
-
-    private void showTotal(){
-        System.out.printf("The total sum of your expenses is: %.2f%n",this.expenseTracker.getTotalSum());
     }
 
     private void filterByCategory(){
@@ -96,6 +99,33 @@ public class ExpenseApp {
         if(!this.expenseTracker.remove(id)){
             System.out.println("No such expense!");
         };
+    }
+
+    private void editExpense(){
+        System.out.print("Enter the id of the expense you want to edit: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        Expense ex = expenseTracker.searchByID(id);
+        if(ex == null){
+            System.out.println("No such expense!");
+        }else{
+            System.out.print("Enter new sum: ");
+            double sum = Double.parseDouble(scanner.nextLine());
+            ex.setValue(sum);
+
+            System.out.print("Enter new category: ");
+            String category = scanner.nextLine();
+            ex.setCategory(category);
+
+            System.out.print("Enter new date (dd.mm.yyyy): ");
+            String[] dateValue = scanner.nextLine().split("\\.");
+            LocalDate date = LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
+            ex.setDate(date);
+
+            System.out.print("Enter new description: ");
+            String description = scanner.nextLine();
+            ex.setDescription(description);
+
+        }
     }
 
 
