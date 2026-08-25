@@ -19,7 +19,14 @@ public class ExpenseTracker {
     }
 
     public boolean remove(int id){
-        return expenses.removeIf(e -> e.getId() == id);
+        Expense expense = searchByID(id);
+
+        if(expense != null){
+            expenses.remove(expense);
+            return true;
+        }
+
+        return false;
     }
 
     public List<Expense> filterExpenses(String category){
