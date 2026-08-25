@@ -30,6 +30,10 @@ public class Expense {
         return id;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == null || getClass() != other.getClass()) return false;
