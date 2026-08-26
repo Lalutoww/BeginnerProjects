@@ -53,7 +53,7 @@ public class ExpenseApp {
         System.out.print("Enter sum: ");
         double sum = Double.parseDouble(scanner.nextLine());
         System.out.print("Enter category: ");
-        String category = scanner.nextLine();
+        Category category = Category.valueOf(scanner.nextLine().toUpperCase());
         System.out.print("Enter date (dd.mm.yyyy): ");
         String[] dateValue = scanner.nextLine().split("\\.");
         LocalDate date = LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
@@ -98,9 +98,9 @@ public class ExpenseApp {
 
     private void filterByCategory(){
         System.out.print("Enter category: ");
-        String category = scanner.nextLine();
+        String categoryName = scanner.nextLine();
 
-        this.expenseTracker.filterExpenses(category).forEach(System.out::println);
+        this.expenseTracker.filterExpenses(categoryName).forEach(System.out::println);
     }
 
     private void removeExpense(){
@@ -120,7 +120,7 @@ public class ExpenseApp {
         }else{
             System.out.println("Enter new values when prompted (empty keeps current value)");
 
-            System.out.print("Enter new sum: ");
+            System.out.print("Enter new value: ");
             String value = scanner.nextLine();
             if(!value.isEmpty()){
                 double sum = Double.parseDouble(value);
@@ -128,8 +128,11 @@ public class ExpenseApp {
             }
 
             System.out.print("Enter new category: ");
-            String category = scanner.nextLine();
-            if(!category.isEmpty()) ex.setCategory(category);
+            String categoryName = scanner.nextLine().toUpperCase();
+            if(!categoryName.isEmpty()){
+                Category category = Category.valueOf(categoryName);
+                ex.setCategory(category);
+            }
 
             System.out.print("Enter new date (dd.mm.yyyy): ");
             String dateString = scanner.nextLine();

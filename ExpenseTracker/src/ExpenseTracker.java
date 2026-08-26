@@ -30,7 +30,7 @@ public class ExpenseTracker {
     }
 
     public List<Expense> filterExpenses(String category){
-        return this.expenses.stream().filter(x -> x.getCategory().equalsIgnoreCase(category)).collect(Collectors.toList());
+        return this.expenses.stream().filter(x -> x.getCategoryName().equalsIgnoreCase(category)).collect(Collectors.toList());
     }
 
     public double getTotalSum(int month){

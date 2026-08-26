@@ -6,11 +6,11 @@ public class Expense {
 
     private final int id;
     private double value;
-    private String category;
+    private Category category;
     private LocalDate date;
     private String description;
 
-    public Expense(double value, String category, LocalDate date, String description) {
+    public Expense(double value, Category category, LocalDate date, String description) {
         this.id = idCounter++;
         setValue(value);
         this.category = category;
@@ -22,8 +22,8 @@ public class Expense {
         return value;
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategoryName() {
+        return category.name();
     }
 
     public int getId() {
@@ -49,7 +49,7 @@ public class Expense {
         this.value = Math.abs(value);
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
