@@ -8,7 +8,7 @@ import java.util.OptionalInt;
 import java.util.Scanner;
 
 public class InputReader {
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy").withResolverStyle(ResolverStyle.STRICT);
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.uuuu").withResolverStyle(ResolverStyle.STRICT);
     private final Scanner scanner;
 
     public InputReader() {
