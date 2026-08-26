@@ -33,22 +33,6 @@ public class ExpenseApp {
         }
     }
 
-    private void printMenu(){
-        System.out.println("""
-                Commands:
-                0. Help -> shows the menu again!
-                1. Add -> Log a new expense!
-                2. List -> List all of your expenses!
-                3. Search -> Search for an element!
-                4. Filter By Category -> Filters by category!
-                5. Remove -> Removes an expense from your tracker!
-                6. Edit -> Edit an expense!
-                7. Stats -> Show statistics!
-                X. Quit -> Quits the app!
-                """);
-        System.out.println();
-    }
-
     private void addExpense(){
         this.expenseTracker.add(createExpense());
     }
@@ -160,14 +144,30 @@ public class ExpenseApp {
         return new Expense(price, category, date, description);
     }
 
+    private LocalDate createDate(String dateString){
+        String[] dateValue = dateString.split("\\.");
+        return LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
+    }
+
     private static void printCategories() {
         for(int i = 0; i < Category.values().length; i++){
             System.out.printf("%d: %s %n", i+1, Category.values()[i]);
         }
     }
 
-    private LocalDate createDate(String dateString){
-        String[] dateValue = dateString.split("\\.");
-        return LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
+    private void printMenu(){
+        System.out.println("""
+                Commands:
+                0. Help -> shows the menu again!
+                1. Add -> Log a new expense!
+                2. List -> List all of your expenses!
+                3. Search -> Search for an element!
+                4. Filter By Category -> Filters by category!
+                5. Remove -> Removes an expense from your tracker!
+                6. Edit -> Edit an expense!
+                7. Stats -> Show statistics!
+                X. Quit -> Quits the app!
+                """);
+        System.out.println();
     }
 }
