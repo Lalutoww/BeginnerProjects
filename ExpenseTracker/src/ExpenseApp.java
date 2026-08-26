@@ -116,10 +116,14 @@ public class ExpenseApp {
                 ex.setPrice(price);
             }
 
-            System.out.print("Enter new category: ");
-            String categoryName = scanner.nextLine().toUpperCase();
-            if(!categoryName.isEmpty()){
-                Category category = Category.valueOf(categoryName);
+            System.out.println("Select new category: ");
+            printCategories();
+
+            System.out.print("Enter a number: ");
+            String categoryNumberAsString = scanner.nextLine();
+
+            if(!categoryNumberAsString.isEmpty()){
+                Category category = Category.values()[Integer.parseInt(categoryNumberAsString) - 1];
                 ex.setCategory(category);
             }
 
@@ -142,9 +146,7 @@ public class ExpenseApp {
         double price = Double.parseDouble(scanner.nextLine());
 
         System.out.println("Select category: ");
-        for(int i = 0; i < Category.values().length; i++){
-            System.out.printf("%d: %s %n", i+1, Category.values()[i]);
-        }
+        printCategories();
 
         System.out.print("Enter a number: ");
         Category category = Category.values()[Integer.parseInt(scanner.nextLine()) - 1];
@@ -156,6 +158,12 @@ public class ExpenseApp {
         String description = scanner.nextLine();
 
         return new Expense(price, category, date, description);
+    }
+
+    private static void printCategories() {
+        for(int i = 0; i < Category.values().length; i++){
+            System.out.printf("%d: %s %n", i+1, Category.values()[i]);
+        }
     }
 
     private LocalDate createDate(String dateString){
