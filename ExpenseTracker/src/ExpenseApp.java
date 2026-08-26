@@ -50,10 +50,17 @@ public class ExpenseApp {
     }
 
     private void addExpense(){
-        System.out.print("Enter sum: ");
+        System.out.print("Enter value: ");
         double sum = Double.parseDouble(scanner.nextLine());
-        System.out.print("Enter category: ");
-        Category category = Category.valueOf(scanner.nextLine().toUpperCase());
+
+        System.out.println("Select category: ");
+        for(int i = 0; i < Category.values().length; i++){
+            System.out.printf("%d: %s %n", i+1, Category.values()[i]);
+        }
+
+        System.out.print("Enter a number: ");
+        Category category = Category.values()[Integer.parseInt(scanner.nextLine()) - 1];
+
         System.out.print("Enter date (dd.mm.yyyy): ");
         String[] dateValue = scanner.nextLine().split("\\.");
         LocalDate date = LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
