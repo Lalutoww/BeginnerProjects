@@ -1,20 +1,21 @@
 import java.time.LocalDate;
-import java.util.Scanner;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 
 public class ExpenseApp {
-    private final Scanner scanner;
     private final ExpenseTracker expenseTracker;
+    private final InputReader inputReader;
 
     public ExpenseApp(){
-        this.scanner = new Scanner(System.in);
         this.expenseTracker = new ExpenseTracker();
+        this.inputReader = new InputReader();
     }
 
     public void start(){
         printMenu();
         while(true){
-            System.out.print("Enter command: ");
-            String command = scanner.nextLine();
+            String command = inputReader.readString("Enter command: ");
 
             switch (command.toLowerCase()){
                 case "help" -> printMenu();
@@ -42,9 +43,11 @@ public class ExpenseApp {
     }
 
     private void showStatistics() {
-        System.out.print("Enter month number or leave empty for total stats: ");
-        String input = scanner.nextLine();
-        int monthValue = input.isEmpty() ? 0 : Integer.parseInt(input);
+
+        OptionalInt month = inputReader.readOptionalInt("Enter month number or leave empty for total stats: ");
+        int monthValue = month.isPresent()
+                ? month.getAsInt()
+                : 0;
 
         System.out.println("Total expenses: " + this.expenseTracker.getTotalSum(monthValue));
         System.out.println("Average expense: " + this.expenseTracker.getAverageSum(monthValue));
@@ -55,8 +58,7 @@ public class ExpenseApp {
     }
 
     private void searchExpense() {
-        System.out.print("Enter price: ");
-        double price = Double.parseDouble(scanner.nextLine());
+        double price = inputReader.readDouble("Enter price: ");
 
         Expense expense = expenseTracker.searchByPrice(price);
 
@@ -69,90 +71,47 @@ public class ExpenseApp {
     }
 
     private void filterByCategory(){
-        System.out.print("Enter category: ");
-        String categoryName = scanner.nextLine();
+        String categoryName = inputReader.readString("Enter category: ");
 
         this.expenseTracker.filterExpenses(categoryName).forEach(System.out::println);
     }
 
     private void removeExpense(){
-        System.out.print("Enter the id of the expense you want to remove: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        if(!this.expenseTracker.remove(id)){
+        if(!this.expenseTracker.remove(inputReader.readInt("Enter the id of the expense you want to remove: "))){
             System.out.println("No such expense!");
         }
     }
 
     private void editExpense(){
-        System.out.print("Enter the id of the expense you want to edit: ");
-        int id = Integer.parseInt(scanner.nextLine());
-        Expense ex = expenseTracker.searchByID(id);
+        Expense ex = expenseTracker.searchByID(inputReader.readInt("Enter the id of the expense you want to edit: "));
+
         if(ex == null){
             System.out.println("No such expense!");
         }else{
             System.out.println("Enter new values when prompted (empty keeps current value)");
 
-            System.out.print("Enter new price: ");
-            String value = scanner.nextLine();
-            if(!value.isEmpty()){
-                double price = Double.parseDouble(value);
-                ex.setPrice(price);
-            }
+            OptionalDouble price = inputReader.readOptionalDouble("Enter new price: ");
+            price.ifPresent(ex::setPrice);
 
-            System.out.println("Select new category: ");
-            printCategories();
+            Optional<Category> categoryValue = inputReader.readOptionalCategory("Select new category: ");
+            categoryValue.ifPresent(ex::setCategory);
 
-            System.out.print("Enter a number: ");
-            String categoryNumberAsString = scanner.nextLine();
+            Optional<LocalDate> optionalDate = inputReader.readOptionalDate("Enter new date (dd.mm.yyyy): ");
+            optionalDate.ifPresent(ex::setDate);
 
-            if(!categoryNumberAsString.isEmpty()){
-                Category category = Category.values()[Integer.parseInt(categoryNumberAsString) - 1];
-                ex.setCategory(category);
-            }
-
-            System.out.print("Enter new date (dd.mm.yyyy): ");
-            String dateString = scanner.nextLine();
-            if(!dateString.isEmpty()) {
-                LocalDate date = createDate(dateString);
-                ex.setDate(date);
-            }
-
-            System.out.print("Enter new description: ");
-            String description = scanner.nextLine();
+            String description = inputReader.readString("Enter new description: ");
             if(!description.isEmpty()) ex.setDescription(description);
 
         }
     }
 
     private Expense createExpense(){
-        System.out.print("Enter price: ");
-        double price = Double.parseDouble(scanner.nextLine());
-
-        System.out.println("Select category: ");
-        printCategories();
-
-        System.out.print("Enter a number: ");
-        Category category = Category.values()[Integer.parseInt(scanner.nextLine()) - 1];
-
-        System.out.print("Enter date (dd.mm.yyyy): ");
-        LocalDate date = createDate(scanner.nextLine());
-
-        System.out.print("Enter description: ");
-        String description = scanner.nextLine();
+        double price = inputReader.readDouble("Enter price: ");
+        Category category = inputReader.readCategory("Select category ");
+        LocalDate date = inputReader.readDate("Enter date (dd.mm.yyyy): ");
+        String description = inputReader.readString("Enter description: ");
 
         return new Expense(price, category, date, description);
-    }
-
-    private LocalDate createDate(String dateString){
-        String[] dateValue = dateString.split("\\.");
-        return LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
-    }
-
-    private static void printCategories() {
-        for(int i = 0; i < Category.values().length; i++){
-            System.out.printf("%d: %s %n", i+1, Category.values()[i]);
-        }
     }
 
     private void printMenu(){
