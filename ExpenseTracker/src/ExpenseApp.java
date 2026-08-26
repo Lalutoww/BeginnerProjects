@@ -1,8 +1,5 @@
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
+import java.util.*;
 
 public class ExpenseApp {
     private final ExpenseTracker expenseTracker;
@@ -50,11 +47,13 @@ public class ExpenseApp {
                 ? month.getAsInt()
                 : 0;
 
-        System.out.println("Total expenses: " + this.expenseTracker.getTotalSum(monthValue));
-        System.out.println("Average expense: " + this.expenseTracker.getAverageSum(monthValue));
-        System.out.println("Highest expense: " + this.expenseTracker.getHighestExpense(monthValue));
-        System.out.println("Lowest expense: " + this.expenseTracker.getLowestExpense(monthValue));
-        System.out.println("Number of expenses: " + this.expenseTracker.getTotalExpenses(monthValue));
+        DoubleSummaryStatistics stats = expenseTracker.getMonthStatistics(monthValue);
+
+        System.out.println("Total expenses: " + stats.getSum());
+        System.out.println("Average expense: " + stats.getAverage());
+        System.out.println("Highest expense: " + stats.getMax());
+        System.out.println("Lowest expense: " + stats.getMin());
+        System.out.println("Number of expenses: " + stats.getCount());
 
     }
 

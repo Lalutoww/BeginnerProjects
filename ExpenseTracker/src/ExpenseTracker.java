@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,41 +35,14 @@ public class ExpenseTracker {
         return this.expenses.stream().filter(x -> x.getCategory().equals(category)).collect(Collectors.toList());
     }
 
-    public double getTotalSum(int month){
-        if(isMonthInvalid(month)){
-            return 0.00;
-        }
-        return expensesForMonth(month).mapToDouble(Expense::getPrice).sum();
-    }
-
-    public double getAverageSum(int month){
-        if(isMonthInvalid(month)){
-            return 0.00;
-        }
-        return expensesForMonth(month).mapToDouble(Expense::getPrice).average().orElse(0.00);
-    }
-
-    public double getHighestExpense(int month){
-        if(isMonthInvalid(month)){
-            return 0.00;
+    public DoubleSummaryStatistics getMonthStatistics(int month) {
+        if (isMonthInvalid(month)) {
+            return new DoubleSummaryStatistics();
         }
 
-        return expensesForMonth(month).mapToDouble(Expense::getPrice).max().orElse(0.00);
-    }
-
-    public double getLowestExpense(int month){
-        if(isMonthInvalid(month)){
-            return 0.00;
-        }
-        return expensesForMonth(month).mapToDouble(Expense::getPrice).min().orElse(0.00);
-    }
-
-    public int getTotalExpenses(int month){
-        if(isMonthInvalid(month)){
-            return 0;
-        }
-
-        return (int) expensesForMonth(month).count();
+        return expensesForMonth(month)
+                .mapToDouble(Expense::getPrice)
+                .summaryStatistics();
     }
 
     public List<Expense> searchByPrice(double price){
