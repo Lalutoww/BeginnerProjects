@@ -50,8 +50,8 @@ public class ExpenseApp {
     }
 
     private void addExpense(){
-        System.out.print("Enter value: ");
-        double sum = Double.parseDouble(scanner.nextLine());
+        System.out.print("Enter price: ");
+        double price = Double.parseDouble(scanner.nextLine());
 
         System.out.println("Select category: ");
         for(int i = 0; i < Category.values().length; i++){
@@ -67,7 +67,7 @@ public class ExpenseApp {
         System.out.print("Enter description: ");
         String description = scanner.nextLine();
 
-        Expense ex = new Expense(sum, category, date, description);
+        Expense ex = new Expense(price, category, date, description);
 
         this.expenseTracker.add(ex);
     }
@@ -90,10 +90,10 @@ public class ExpenseApp {
     }
 
     private void searchExpense() {
-        System.out.print("Enter value: ");
-        double value = Double.parseDouble(scanner.nextLine());
+        System.out.print("Enter price: ");
+        double price = Double.parseDouble(scanner.nextLine());
 
-        Expense expense = expenseTracker.searchByValue(value);
+        Expense expense = expenseTracker.searchByPrice(price);
 
         if (expense == null) {
             System.out.println("Expense not found.");
@@ -127,11 +127,11 @@ public class ExpenseApp {
         }else{
             System.out.println("Enter new values when prompted (empty keeps current value)");
 
-            System.out.print("Enter new value: ");
+            System.out.print("Enter new price: ");
             String value = scanner.nextLine();
             if(!value.isEmpty()){
-                double sum = Double.parseDouble(value);
-                ex.setValue(sum);
+                double price = Double.parseDouble(value);
+                ex.setPrice(price);
             }
 
             System.out.print("Enter new category: ");

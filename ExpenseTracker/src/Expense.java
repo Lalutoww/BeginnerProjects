@@ -5,21 +5,21 @@ public class Expense {
     private static int idCounter = 1;
 
     private final int id;
-    private double value;
+    private double price;
     private Category category;
     private LocalDate date;
     private String description;
 
-    public Expense(double value, Category category, LocalDate date, String description) {
+    public Expense(double price, Category category, LocalDate date, String description) {
         this.id = idCounter++;
-        setValue(value);
+        setPrice(price);
         this.category = category;
         this.date = date;
         this.description = description;
     }
 
-    public double getValue() {
-        return value;
+    public double getPrice() {
+        return price;
     }
 
     public String getCategoryName() {
@@ -45,8 +45,8 @@ public class Expense {
         return id == expense.id;
     }
 
-    public void setValue(double value) {
-        this.value = Math.abs(value);
+    public void setPrice(double price) {
+        this.price = Math.abs(price);
     }
 
     public void setCategory(Category category) {
@@ -70,6 +70,6 @@ public class Expense {
     public String toString() {
         return String.format(
                 "ID: %d | Amount: %.2f | Date: %s | Category: %s | Description: %s",
-                id, value, date, category, description);
+                id, price, date, category, description);
     }
 }
