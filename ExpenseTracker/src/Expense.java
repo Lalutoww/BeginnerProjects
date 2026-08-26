@@ -1,7 +1,7 @@
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Expense {
+public class Expense implements Comparable<Expense>{
     private static int idCounter = 1;
 
     private final int id;
@@ -71,5 +71,20 @@ public class Expense {
         return String.format(
                 "ID: %d | Amount: %.2f | Date: %s | Category: %s | Description: %s",
                 id, price, date, category, description);
+    }
+
+    @Override
+    public int compareTo(Expense other) {
+        int dateComparison = this.getDate().compareTo(other.getDate());
+
+        if(dateComparison == 0){
+            int priceComparison = Double.compare(this.price, other.price);
+
+            if(priceComparison == 0){
+                return Integer.compare(this.id, other.id);
+            }
+            return priceComparison;
+        }
+        return dateComparison;
     }
 }
