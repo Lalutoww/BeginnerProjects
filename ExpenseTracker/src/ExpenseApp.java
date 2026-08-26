@@ -126,8 +126,7 @@ public class ExpenseApp {
             System.out.print("Enter new date (dd.mm.yyyy): ");
             String dateString = scanner.nextLine();
             if(!dateString.isEmpty()) {
-                String[] dateValue = dateString.split("\\.");
-                LocalDate date = LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
+                LocalDate date = createDate(dateString);
                 ex.setDate(date);
             }
 
@@ -151,11 +150,16 @@ public class ExpenseApp {
         Category category = Category.values()[Integer.parseInt(scanner.nextLine()) - 1];
 
         System.out.print("Enter date (dd.mm.yyyy): ");
-        String[] dateValue = scanner.nextLine().split("\\.");
-        LocalDate date = LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
+        LocalDate date = createDate(scanner.nextLine());
+
         System.out.print("Enter description: ");
         String description = scanner.nextLine();
 
         return new Expense(price, category, date, description);
+    }
+
+    private LocalDate createDate(String dateString){
+        String[] dateValue = dateString.split("\\.");
+        return LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
     }
 }
