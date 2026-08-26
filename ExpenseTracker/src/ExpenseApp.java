@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
@@ -7,17 +8,17 @@ public class ExpenseApp {
     private final ExpenseTracker expenseTracker;
     private final InputReader inputReader;
 
-    public ExpenseApp(){
+    public ExpenseApp() {
         this.expenseTracker = new ExpenseTracker();
         this.inputReader = new InputReader();
     }
 
-    public void start(){
+    public void start() {
         printMenu();
-        while(true){
+        while (true) {
             String command = inputReader.readString("Enter command: ");
 
-            switch (command.toLowerCase()){
+            switch (command.toLowerCase()) {
                 case "help" -> printMenu();
                 case "add" -> addExpense();
                 case "list" -> listExpenses();
@@ -34,11 +35,11 @@ public class ExpenseApp {
         }
     }
 
-    private void addExpense(){
+    private void addExpense() {
         this.expenseTracker.add(createExpense());
     }
 
-    private void listExpenses(){
+    private void listExpenses() {
         this.expenseTracker.getExpenses().forEach(System.out::println);
     }
 
@@ -60,52 +61,54 @@ public class ExpenseApp {
     private void searchExpense() {
         double price = inputReader.readDouble("Enter price: ");
 
-        Expense expense = expenseTracker.searchByPrice(price);
+        List<Expense> expenses = expenseTracker.searchByPrice(price);
 
-        if (expense == null) {
-            System.out.println("Expense not found.");
+        if (!expenses.isEmpty()) {
+            expenses.forEach(System.out::println);
         } else {
-            System.out.println(expense);
+            System.out.println("Expense not found.");
         }
 
     }
 
-    private void filterByCategory(){
-        String categoryName = inputReader.readString("Enter category: ");
+    private void filterByCategory() {
+        Category category = inputReader.readCategory("Enter category: ");
 
-        this.expenseTracker.filterExpenses(categoryName).forEach(System.out::println);
+        this.expenseTracker.filterExpenses(category).forEach(System.out::println);
     }
 
-    private void removeExpense(){
-        if(!this.expenseTracker.remove(inputReader.readInt("Enter the id of the expense you want to remove: "))){
+    private void removeExpense() {
+        if (!this.expenseTracker.remove(inputReader.readInt("Enter the id of the expense you want to remove: "))) {
             System.out.println("No such expense!");
         }
     }
 
-    private void editExpense(){
-        Expense ex = expenseTracker.searchByID(inputReader.readInt("Enter the id of the expense you want to edit: "));
+    private void editExpense() {
+        Optional<Expense> ex = expenseTracker.searchByID(inputReader.readInt("Enter the id of the expense you want to edit: "));
 
-        if(ex == null){
+        if (ex.isEmpty()) {
             System.out.println("No such expense!");
-        }else{
-            System.out.println("Enter new values when prompted (empty keeps current value)");
-
-            OptionalDouble price = inputReader.readOptionalDouble("Enter new price: ");
-            price.ifPresent(ex::setPrice);
-
-            Optional<Category> categoryValue = inputReader.readOptionalCategory("Select new category: ");
-            categoryValue.ifPresent(ex::setCategory);
-
-            Optional<LocalDate> optionalDate = inputReader.readOptionalDate("Enter new date (dd.mm.yyyy): ");
-            optionalDate.ifPresent(ex::setDate);
-
-            String description = inputReader.readString("Enter new description: ");
-            if(!description.isEmpty()) ex.setDescription(description);
-
+            return;
         }
+
+        Expense expense = ex.get();
+        System.out.println("Enter new values when prompted (empty keeps current value)");
+
+        OptionalDouble price = inputReader.readOptionalDouble("Enter new price: ");
+        price.ifPresent(expense::setPrice);
+
+        Optional<Category> categoryValue = inputReader.readOptionalCategory("Select new category: ");
+        categoryValue.ifPresent(expense::setCategory);
+
+        Optional<LocalDate> optionalDate = inputReader.readOptionalDate("Enter new date (dd.mm.yyyy): ");
+        optionalDate.ifPresent(expense::setDate);
+
+        String description = inputReader.readString("Enter new description: ");
+        if (!description.isEmpty()) expense.setDescription(description);
+
     }
 
-    private Expense createExpense(){
+    private Expense createExpense() {
         double price = inputReader.readDouble("Enter price: ");
         Category category = inputReader.readCategory("Select category ");
         LocalDate date = inputReader.readDate("Enter date (dd.mm.yyyy): ");
@@ -114,7 +117,7 @@ public class ExpenseApp {
         return new Expense(price, category, date, description);
     }
 
-    private void printMenu(){
+    private void printMenu() {
         System.out.println("""
                 Commands:
                 0. Help -> shows the menu again!

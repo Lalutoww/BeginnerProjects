@@ -22,8 +22,8 @@ public class Expense implements Comparable<Expense>{
         return price;
     }
 
-    public String getCategoryName() {
-        return category.name();
+    public Category getCategory() {
+        return category;
     }
 
     public int getId() {

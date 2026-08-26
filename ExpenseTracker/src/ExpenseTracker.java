@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,18 +20,18 @@ public class ExpenseTracker {
     }
 
     public boolean remove(int id){
-        Expense expense = searchByID(id);
+        Optional<Expense> expense = searchByID(id);
 
-        if(expense != null){
-            expenses.remove(expense);
+        if(expense.isPresent()){
+            expenses.remove(expense.get());
             return true;
         }
 
         return false;
     }
 
-    public List<Expense> filterExpenses(String category){
-        return this.expenses.stream().filter(x -> x.getCategoryName().equalsIgnoreCase(category)).collect(Collectors.toList());
+    public List<Expense> filterExpenses(Category category){
+        return this.expenses.stream().filter(x -> x.getCategory().equals(category)).collect(Collectors.toList());
     }
 
     public double getTotalSum(int month){
@@ -70,12 +71,12 @@ public class ExpenseTracker {
         return (int) expensesForMonth(month).count();
     }
 
-    public Expense searchByPrice(double price){
-        return this.expenses.stream().filter(x -> Math.abs(x.getPrice() - price) < 0.001).findFirst().orElse(null);
+    public List<Expense> searchByPrice(double price){
+        return this.expenses.stream().filter(x -> Math.abs(x.getPrice() - price) < 0.001).collect(Collectors.toList());
     }
 
-    public Expense searchByID(int id){
-        return this.expenses.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+    public Optional<Expense> searchByID(int id){
+        return this.expenses.stream().filter(x -> x.getId() == id).findFirst();
     }
 
     private Stream<Expense> expensesForMonth(int month){
