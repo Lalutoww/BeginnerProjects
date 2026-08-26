@@ -50,26 +50,7 @@ public class ExpenseApp {
     }
 
     private void addExpense(){
-        System.out.print("Enter price: ");
-        double price = Double.parseDouble(scanner.nextLine());
-
-        System.out.println("Select category: ");
-        for(int i = 0; i < Category.values().length; i++){
-            System.out.printf("%d: %s %n", i+1, Category.values()[i]);
-        }
-
-        System.out.print("Enter a number: ");
-        Category category = Category.values()[Integer.parseInt(scanner.nextLine()) - 1];
-
-        System.out.print("Enter date (dd.mm.yyyy): ");
-        String[] dateValue = scanner.nextLine().split("\\.");
-        LocalDate date = LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
-        System.out.print("Enter description: ");
-        String description = scanner.nextLine();
-
-        Expense ex = new Expense(price, category, date, description);
-
-        this.expenseTracker.add(ex);
+        this.expenseTracker.add(createExpense());
     }
 
     private void listExpenses(){
@@ -79,7 +60,7 @@ public class ExpenseApp {
     private void showStatistics() {
         System.out.print("Enter month number or leave empty for total stats: ");
         String input = scanner.nextLine();
-        int monthValue = input.isEmpty() ? 0 :Integer.parseInt(input);
+        int monthValue = input.isEmpty() ? 0 : Integer.parseInt(input);
 
         System.out.println("Total expenses: " + this.expenseTracker.getTotalSum(monthValue));
         System.out.println("Average expense: " + this.expenseTracker.getAverageSum(monthValue));
@@ -113,6 +94,7 @@ public class ExpenseApp {
     private void removeExpense(){
         System.out.print("Enter the id of the expense you want to remove: ");
         int id = Integer.parseInt(scanner.nextLine());
+
         if(!this.expenseTracker.remove(id)){
             System.out.println("No such expense!");
         }
@@ -156,6 +138,24 @@ public class ExpenseApp {
         }
     }
 
+    private Expense createExpense(){
+        System.out.print("Enter price: ");
+        double price = Double.parseDouble(scanner.nextLine());
 
+        System.out.println("Select category: ");
+        for(int i = 0; i < Category.values().length; i++){
+            System.out.printf("%d: %s %n", i+1, Category.values()[i]);
+        }
 
+        System.out.print("Enter a number: ");
+        Category category = Category.values()[Integer.parseInt(scanner.nextLine()) - 1];
+
+        System.out.print("Enter date (dd.mm.yyyy): ");
+        String[] dateValue = scanner.nextLine().split("\\.");
+        LocalDate date = LocalDate.of(Integer.parseInt(dateValue[2]), Integer.parseInt(dateValue[1]), Integer.parseInt(dateValue[0]));
+        System.out.print("Enter description: ");
+        String description = scanner.nextLine();
+
+        return new Expense(price, category, date, description);
+    }
 }
