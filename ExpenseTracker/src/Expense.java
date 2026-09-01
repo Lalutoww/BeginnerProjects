@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Expense implements Comparable<Expense>{
@@ -16,6 +17,31 @@ public class Expense implements Comparable<Expense>{
         this.category = category;
         this.date = date;
         this.description = description;
+    }
+
+    public Expense(int id, double price, Category category, LocalDate date, String description) {
+        this.id = id;
+        checkIdCounter(id);
+        setPrice(price);
+        this.category = category;
+        this.date = date;
+        this.description = description;
+    }
+
+    public static void checkIdCounter(int id) {
+        if(id >= idCounter){
+            idCounter = id + 1;
+        }
+    }
+
+    public static Expense parseExpense(String stringExpense){
+        String[] data = stringExpense.split("\\|",5);
+            int id = Integer.parseInt(data[0]);
+            double price = Double.parseDouble(data[1]);
+            LocalDate date = LocalDate.parse(data[2]);
+            Category category = Category.valueOf(data[3].toUpperCase());
+            String description = data[4];
+            return new Expense(id, price, category, date, description);
     }
 
     public double getPrice() {
@@ -61,6 +87,12 @@ public class Expense implements Comparable<Expense>{
         this.description = description;
     }
 
+    public String toFileFormat(){
+        return String.format(Locale.ENGLISH,
+                "%d|%.2f|%s|%s|%s",
+                id, price, date, category, description);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id);
@@ -68,7 +100,7 @@ public class Expense implements Comparable<Expense>{
 
     @Override
     public String toString() {
-        return String.format(
+        return String.format(Locale.ENGLISH,
                 "ID: %d | Amount: %.2f | Date: %s | Category: %s | Description: %s",
                 id, price, date, category, description);
     }
