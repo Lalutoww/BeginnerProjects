@@ -12,6 +12,10 @@ public class ExpenseTracker {
         this.expenses = new ArrayList<>();
     }
 
+    public ExpenseTracker(List<Expense> expenses) {
+        this.expenses = new ArrayList<>(expenses);
+    }
+
     public void add(Expense expense){
         this.expenses.add(expense);
     }

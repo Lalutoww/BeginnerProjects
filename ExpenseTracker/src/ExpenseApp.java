@@ -1,16 +1,19 @@
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
 public class ExpenseApp {
     private final ExpenseTracker expenseTracker;
     private final InputReader inputReader;
+    private final ExpenseFileService fileService;
 
-    public ExpenseApp() {
-        this.expenseTracker = new ExpenseTracker();
+    public ExpenseApp() throws IOException{
+        this.fileService = new ExpenseFileService();
+        this.expenseTracker = new ExpenseTracker(this.fileService.load());
         this.inputReader = new InputReader();
     }
 
-    public void start() {
+    public void start() throws IOException{
         printMenu();
         while (true) {
             String command = inputReader.readString("Enter command: ");
@@ -25,6 +28,7 @@ public class ExpenseApp {
                 case "edit" -> editExpense();
                 case "stats" -> showStatistics();
                 case "quit" -> {
+                    fileService.save(expenseTracker.getExpenses());
                     return;
                 }
                 default -> System.out.println("Invalid command");
