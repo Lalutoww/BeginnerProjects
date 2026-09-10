@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
@@ -7,28 +8,28 @@ import java.util.stream.Stream;
 
 public class ExpenseTracker {
     private final List<Expense> expenses;
+    private final ExpenseFileService fileService;
 
-    public ExpenseTracker(){
-        this.expenses = new ArrayList<>();
+    public ExpenseTracker(ExpenseFileService fileService) throws IOException {
+        this.fileService = fileService;
+        this.expenses = new ArrayList<>(this.fileService.load());
     }
 
-    public ExpenseTracker(List<Expense> expenses) {
-        this.expenses = new ArrayList<>(expenses);
-    }
-
-    public void add(Expense expense){
+    public void add(Expense expense) throws IOException {
         this.expenses.add(expense);
+        this.fileService.save(this.expenses);
     }
 
     public List<Expense> getExpenses() {
         return new ArrayList<>(expenses);
     }
 
-    public boolean remove(int id){
+    public boolean remove(int id) throws IOException {
         Optional<Expense> expense = searchByID(id);
 
         if(expense.isPresent()){
             expenses.remove(expense.get());
+            this.fileService.save(this.expenses);
             return true;
         }
 

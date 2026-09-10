@@ -5,11 +5,10 @@ import java.util.*;
 public class ExpenseApp {
     private final ExpenseTracker expenseTracker;
     private final InputReader inputReader;
-    private final ExpenseFileService fileService;
 
     public ExpenseApp() throws IOException{
-        this.fileService = new ExpenseFileService();
-        this.expenseTracker = new ExpenseTracker(this.fileService.load());
+        ExpenseFileService fileService = new ExpenseFileService();
+        this.expenseTracker = new ExpenseTracker(fileService);
         this.inputReader = new InputReader();
     }
 
@@ -36,7 +35,7 @@ public class ExpenseApp {
         }
     }
 
-    private void addExpense() {
+    private void addExpense() throws IOException {
         this.expenseTracker.add(createExpense());
     }
 
@@ -80,7 +79,7 @@ public class ExpenseApp {
         this.expenseTracker.filterExpenses(category).forEach(System.out::println);
     }
 
-    private void removeExpense() {
+    private void removeExpense() throws IOException {
         if (!this.expenseTracker.remove(inputReader.readInt("Enter the id of the expense you want to remove: "))) {
             System.out.println("No such expense!");
         }
