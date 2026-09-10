@@ -27,7 +27,6 @@ public class ExpenseApp {
                 case "edit" -> editExpense();
                 case "stats" -> showStatistics();
                 case "quit" -> {
-                    fileService.save(expenseTracker.getExpenses());
                     return;
                 }
                 default -> System.out.println("Invalid command");
@@ -85,28 +84,18 @@ public class ExpenseApp {
         }
     }
 
-    private void editExpense() {
-        Optional<Expense> ex = expenseTracker.searchByID(inputReader.readInt("Enter the id of the expense you want to edit: "));
+    private void editExpense() throws IOException {
+        int id = inputReader.readInt("Enter the id of the expense you want to edit: ");
 
-        if (ex.isEmpty()) {
-            System.out.println("No such expense!");
-            return;
-        }
-
-        Expense expense = ex.get();
         System.out.println("Enter new values when prompted (empty keeps current value)");
-
         OptionalDouble price = inputReader.readOptionalDouble("Enter new price: ");
-        price.ifPresent(expense::setPrice);
-
-        Optional<Category> categoryValue = inputReader.readOptionalCategory("Select new category: ");
-        categoryValue.ifPresent(expense::setCategory);
-
-        Optional<LocalDate> optionalDate = inputReader.readOptionalDate("Enter new date (dd.mm.yyyy): ");
-        optionalDate.ifPresent(expense::setDate);
-
+        Optional<Category> category = inputReader.readOptionalCategory("Select new category: ");
+        Optional<LocalDate> date = inputReader.readOptionalDate("Enter new date (dd.mm.yyyy): ");
         String description = inputReader.readString("Enter new description: ");
-        if (!description.isEmpty()) expense.setDescription(description);
+
+        if (!expenseTracker.edit(id, price, category, date, description)) {
+            System.out.println("No such expense!");
+        }
 
     }
 

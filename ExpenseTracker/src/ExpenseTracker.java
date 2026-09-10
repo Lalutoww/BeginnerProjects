@@ -1,8 +1,6 @@
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.DoubleSummaryStatistics;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,6 +32,23 @@ public class ExpenseTracker {
         }
 
         return false;
+    }
+
+    public boolean edit(int id, OptionalDouble price, Optional<Category> category, Optional<LocalDate> date, String description) throws IOException {
+        Optional<Expense> ex = this.searchByID(id);
+
+        if (ex.isEmpty()) {
+            return false;
+        }
+
+        Expense expense = ex.get();
+        price.ifPresent(expense::setPrice);
+        category.ifPresent(expense::setCategory);
+        date.ifPresent(expense::setDate);
+        if (!description.isEmpty()) expense.setDescription(description);
+
+        this.fileService.save(this.expenses);
+        return true;
     }
 
     public List<Expense> filterExpenses(Category category){
